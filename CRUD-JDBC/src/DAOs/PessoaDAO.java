@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +39,7 @@ public class PessoaDAO {
    public PessoaDAO(){
       this.conn = Conexao.getConnection();
    }
-   public void addPessoa(Pessoa pessoa){
+   public Pessoa addPessoa(Pessoa pessoa){
        
        try{
            PreparedStatement stmt = this.conn.prepareStatement(INSERT);
@@ -48,9 +49,11 @@ public class PessoaDAO {
            stmt.setString(4, pessoa.getCpf());
            stmt.execute();
            System.out.println("Registro inserido com sucesso");
+           return pessoa;
        }
        catch(SQLException e ){
            System.out.println("Erro ao inserir registro: "+e.getMessage());
+           return null;
        }
        
        
@@ -79,6 +82,21 @@ public class PessoaDAO {
                return null;
            }
        }
+   
+   public ResultSet populaGrid(){
+              
+              
+               try {
+                       PreparedStatement stmt = this.conn.prepareStatement(READ);
+                       ResultSet rs = stmt.executeQuery();
+                       return rs;
+               } catch (SQLException e) {
+                       System.out.println(e);
+                       return null;
+               }
+
+       }
+
    
    
    
